@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#172554">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Português Quest">
+<title>Português Quest</title>
+<style>
+:root{color-scheme:light;--navy:#172554;--blue:#2563eb;--gold:#f59e0b;--ink:#172033;--muted:#64748b;--line:#e2e8f0;--bg:#f1f5f9;--green:#15803d;--red:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#172554,#1d4ed8);color:white;padding:25px 18px 22px;border-radius:0 0 25px 25px}
+.wrap{max-width:720px;margin:auto;padding:0 15px 35px}.eyebrow{font-size:11px;letter-spacing:2px;font-weight:800;opacity:.8}.brand{font-size:26px;font-weight:900;margin:5px 0}.subtitle{font-size:13px;opacity:.85}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:20px}.stat{background:#ffffff20;border:1px solid #ffffff35;border-radius:14px;padding:10px 5px;text-align:center}.stat strong{display:block;font-size:20px}.stat span{font-size:11px;opacity:.85}
+main{padding-top:16px}.card{background:white;border:1px solid var(--line);border-radius:17px;padding:16px;margin-bottom:13px;box-shadow:0 3px 12px #0f172a08}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.tag{font-size:11px;font-weight:800;background:#eff6ff;color:#1d4ed8;border-radius:30px;padding:6px 10px}
+h2{font-size:17px;margin:0 0 9px}.muted{color:var(--muted);font-size:13px}.progress{height:9px;background:#e2e8f0;border-radius:20px;overflow:hidden;margin:13px 0 6px}.bar{height:100%;width:0;background:linear-gradient(90deg,#2563eb,#22c55e);transition:width .2s}
+.question{font-size:19px;font-weight:800;line-height:1.35;margin:17px 0}.answers{display:grid;gap:9px}.answer{width:100%;text-align:left;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:15px;color:var(--ink);min-height:50px}.answer:active{transform:scale(.99)}.answer:disabled{opacity:1}.answer.good{border:2px solid #16a34a;background:#f0fdf4}.answer.bad{border:2px solid #dc2626;background:#fef2f2}
+button{font:inherit;cursor:pointer}.primary{border:0;background:var(--blue);color:white;border-radius:12px;padding:13px 16px;font-weight:800;width:100%;min-height:49px;margin-top:12px}.secondary{border:1px solid var(--line);background:white;border-radius:12px;padding:11px 14px;font-weight:700}
+.feedback{margin-top:13px;padding:13px;border-radius:12px;background:#f8fafc;border:1px solid var(--line);font-size:14px;line-height:1.5}.hidden{display:none!important}
+.badges{font-size:13px;line-height:1.8}.foot{text-align:center;color:var(--muted);font-size:11px;padding:8px}
+@media(min-width:600px){header{border-radius:0 0 30px 30px}.brand{font-size:30px}.wrap{padding-left:22px;padding-right:22px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">SUA JORNADA COMEÇA AQUI</div><div class="brand">📚 PORTUGUÊS QUEST</div><div class="subtitle">Treine. Evolua. Conquiste sua aprovação.</div>
+<div class="stats"><div class="stat"><strong>⭐ <span id="xp">0</span></strong><span>Experiência</span></div><div class="stat"><strong>🪙 <span id="coins">0</span></strong><span>Moedas</span></div><div class="stat"><strong>❤️ <span id="lives">5</span></strong><span>Vidas</span></div></div>
+</div></header>
+<div class="wrap"><main>
+<section class="card">
+<div class="row"><h2>🗺️ Mundo 1 — Vila da Língua</h2><span class="tag" id="level">Nível 1</span></div>
+<p class="muted">Sua primeira missão: dominar os fundamentos da Língua Portuguesa.</p>
+<div class="row" style="justify-content:flex-start;flex-wrap:wrap"><span class="tag">✍️ Acentuação</span><span class="tag">🔤 Ortografia</span><span class="tag">📖 Classes</span><span class="tag">⚔️ Sintaxe</span></div>
+<div class="progress"><div class="bar" id="bar"></div></div><div class="row muted"><span>Progresso da missão</span><span id="progressText">0/10</span></div>
+</section>
+<section class="card" id="game">
+<div class="row"><span class="tag" id="category">MISSÃO 1</span><span class="muted" id="counter">Questão 1 de 10</span></div>
+<div class="question" id="question"></div><div class="answers" id="answers"></div>
+<div class="feedback hidden" id="feedback" aria-live="polite"></div><button class="primary hidden" id="next">Próxima questão →</button>
+</section>
+<section class="card"><h2>🏆 Suas conquistas</h2><div class="badges" id="badges">Complete desafios para conquistar medalhas.</div></section>
+<section class="card"><div class="row"><div><h2>📊 Seu desempenho</h2><div class="muted" id="performance">Você ainda não respondeu questões.</div></div><button class="secondary" id="reset">Reiniciar</button></div></section>
+<div class="foot">Português Quest • Versão 1.0 • Feito para estudar brincando</div>
+</main></div>
+<script>
+const questions=[
+{c:"Acentuação",q:"Qual palavra está corretamente acentuada?",a:["Ideia","Heróico","Saúde","Vôo"],k:2,e:"Saúde recebe acento porque há hiato: o u é tônico e forma sílaba sozinho. Ideia, heroico e voo não recebem acento pelas regras atuais."},
+{c:"Acentuação",q:"Qual destas palavras é uma proparoxítona?",a:["Café","Lâmpada","Papel","Também"],k:1,e:"Lâmpada é proparoxítona: a sílaba tônica é a antepenúltima. Todas as proparoxítonas são acentuadas."},
+{c:"Ortografia",q:"Assinale a alternativa escrita corretamente.",a:["Excessão","Exceção","Escessão","Ecessão"],k:1,e:"A grafia correta é exceção, com xc e ç. É uma palavra que vale memorizar."},
+{c:"Ortografia",q:"Complete: Não sei _____ você faltou à aula.",a:["Por que","Porque","Por quê","Porquê"],k:0,e:"Por que, separado e sem acento, é usado em perguntas diretas ou indiretas, com sentido de 'por qual razão'."},
+{c:"Classes de palavras",q:"Na frase “A menina estudiosa passou”, a palavra ESTUDIOSA é:",a:["Substantivo","Verbo","Adjetivo","Advérbio"],k:2,e:"Estudiosa caracteriza o substantivo menina. Portanto, é um adjetivo."},
+{c:"Classes de palavras",q:"Na frase “Ela chegou muito cedo”, a palavra MUITO é:",a:["Pronome","Advérbio","Substantivo","Preposição"],k:1,e:"Muito intensifica o advérbio cedo. Nesse contexto, é advérbio de intensidade e é invariável."},
+{c:"Sintaxe",q:"Na frase “Os candidatos estudaram bastante”, o sujeito é:",a:["Estudaram","Bastante","Os candidatos","Sujeito oculto"],k:2,e:"Pergunte ao verbo: quem estudou? Os candidatos. Esse é o sujeito simples; seu núcleo é candidatos."},
+{c:"Sintaxe",q:"Na frase “Maria comprou um livro”, o termo UM LIVRO é:",a:["Sujeito","Objeto direto","Objeto indireto","Adjunto adverbial"],k:1,e:"Quem compra, compra alguma coisa. Um livro completa o verbo sem preposição obrigatória: é objeto direto."},
+{c:"Concordância",q:"Assinale a frase correta.",a:["Fazem dois anos que estudo.","Faz dois anos que estudo.","Fazem muito calor.","Houveram problemas."],k:1,e:"O verbo fazer indicando tempo decorrido é impessoal e fica no singular: faz dois anos. Haver com sentido de existir também fica no singular."},
+{c:"Pontuação",q:"Qual frase apresenta pontuação adequada?",a:["Vamos estudar pessoal!","Vamos estudar, pessoal!","Vamos, estudar pessoal!","Vamos estudar pessoal,"],k:1,e:"Pessoal é vocativo, isto é, chamamento. O vocativo deve ser separado por vírgula."}
+];
+let i=0,xp=0,coins=0,lives=5,correct=0,answered=false,finished=false;
+const $=id=>document.getElementById(id);
+function update(){ $("xp").textContent=xp;$("coins").textContent=coins;$("lives").textContent=lives;$("level").textContent="Nível "+(1+Math.floor(xp/50));$("bar").style.width=(i/questions.length*100)+"%";$("progressText").textContent=i+"/"+questions.length;$("performance").textContent=correct+" acertos em "+(i+(answered?1:0))+" questões respondidas.";let b=[];if(correct>=1)b.push("🥉 Primeiro acerto");if(correct>=5)b.push("🥈 Mente afiada");if(correct>=10)b.push("🥇 Mestre da missão");if(xp>=100)b.push("⭐ 100 XP conquistados");$("badges").textContent=b.length?b.join(" • "):"Complete desafios para conquistar medalhas."}
+function render(){if(i>=questions.length||lives<=0){finish();return}answered=false;const q=questions[i];$("category").textContent=q.c.toUpperCase();$("counter").textContent="Questão "+(i+1)+" de "+questions.length;$("question").textContent=q.q;$("answers").innerHTML="";$("feedback").classList.add("hidden");$("next").classList.add("hidden");q.a.forEach((a,n)=>{const b=document.createElement("button");b.className="answer";b.textContent=String.fromCharCode(65+n)+") "+a;b.addEventListener("click",()=>choose(n));$("answers").appendChild(b)});update()}
+function choose(n){if(answered||finished)return;answered=true;const q=questions[i],ok=n===q.k;[...$("answers").children].forEach((b,j)=>{b.disabled=true;if(j===q.k)b.classList.add("good");if(j===n&&!ok)b.classList.add("bad")});if(ok){xp+=10;coins+=5;correct++;$("feedback").innerHTML="<b>🎉 Muito bem! +10 XP e +5 moedas.</b><br>"+q.e}else{lives--;$("feedback").innerHTML="<b>💡 Não foi dessa vez.</b><br>Resposta correta: <b>"+String.fromCharCode(65+q.k)+") "+q.a[q.k]+"</b><br>"+q.e+"<br><br>Errar faz parte do aprendizado. Guarde essa explicação!"}$("feedback").classList.remove("hidden");$("next").textContent=(i===questions.length-1||lives===0)?"Ver resultado 🏆":"Próxima questão →";$("next").classList.remove("hidden");update()}
+function finish(){finished=true;$("bar").style.width="100%";$("progressText").textContent=questions.length+"/"+questions.length;$("game").innerHTML='<div style="text-align:center;padding:12px 0"><div style="font-size:48px">🏆</div><h2>Missão concluída!</h2><p>Você acertou <b>'+correct+' de '+questions.length+'</b> questões.</p><p>⭐ Experiência: <b>'+xp+' XP</b></p><p>🪙 Moedas: <b>'+coins+'</b></p><p>❤️ Vidas restantes: <b>'+lives+'</b></p><p class="muted">'+(correct>=8?"Excelente desempenho! Você está evoluindo!":correct>=5?"Bom trabalho! Revise as explicações e tente novamente.":"Continue treinando. Cada erro é uma oportunidade de aprender.")+'</p><button class="primary" id="again">Jogar novamente</button></div>';$("again").addEventListener("click",reset);update()}
+function reset(){i=0;xp=0;coins=0;lives=5;correct=0;answered=false;finished=false;$("game").innerHTML='<div class="row"><span class="tag" id="category">MISSÃO 1</span><span class="muted" id="counter">Questão 1 de 10</span></div><div class="question" id="question"></div><div class="answers" id="answers"></div><div class="feedback hidden" id="feedback" aria-live="polite"></div><button class="primary hidden" id="next">Próxima questão →</button>';$("next").addEventListener("click",()=>{i++;render()});render()}
+$("next").addEventListener("click",()=>{i++;render()});$("reset").addEventListener("click",reset);render();
+</script>
+</body></html>
